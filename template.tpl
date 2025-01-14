@@ -1,4 +1,12 @@
-﻿___INFO___
+___TERMS_OF_SERVICE___
+
+By creating or modifying this file you agree to Google Tag Manager's Community
+Template Gallery Developer Terms of Service available at
+https://developers.google.com/tag-manager/gallery-tos (or such other URL as
+Google may provide), as modified from time to time.
+
+
+___INFO___
 
 {
   "type": "TAG",
@@ -7,8 +15,9 @@
   "securityGroups": [],
   "displayName": "Spotler purchase",
   "brand": {
-    "id": "brand_dummy",
-    "displayName": "AdPage"
+    "displayName": "AdPage",
+    "thumbnail": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAABCFBMVEUAAAARKmQRKmQRKmQRKmR5Ojj/TwARKmQRKmSIPDIRKmSFPDMRKmSIPTKMPTBOYIyiq8LGzNrq7PH39/rM0d6krsRLXoqMmLTEytlCVYSPPi8TLGWPm7b///9zgqTZ3eZQY421vc/+/v77/P1RZI4tQ3b6+/yLl7RFWYYYMWk1S3yYo7zKz9zd4ekWLmegqsFTZY/v8fV2hKY4TX4ULWbz9Pdeb5YiOW/c4OloeJ2utspUZpAyR3nn6e+7wtORnLezu874+PoVLWZSZI94hqf09fjl6O7Fy9n9/f68w9M8UICstckqQXRgcZiBjq11g6VIW4gcNGsxRnlNX4shOG4RKmQRKmQRKmSp9aF5AAAAWHRSTlMAOsHy////O/3/vf/z////////////////////////////////////////////////////////////////////////////////////////////////Pvw9QywndwAAAQxJREFUeJy9k1lTwkAQhJcwEkA5FBQUghhAUEAB5T4FQUGUw+v//xOT2ZAyMEne6Jft6v52M9mqZcwhOIHQgYuLiW6qVuTRAK9JD3DIgSNTAHwImPecsATAbwcok/4DAsHjk1D49AwiUVXnGF7oQCwuaUpc4pLk+QaIXW16SU7hkjYC+n5dRiBzbQNkeRjN3dzmSaCAWfFO9fccKBmAMmYV9A8UwAcPoH+UiU9UMauhr1MnNDALom9SQ7b4FbUV2+lSgLZL6vUHT+RvDos2FwWlHWBkBOBZb8YT6gSA3Avmr9PZG5rkNgAwf/9YLFcA609VX7sAqX0A5k8P5WXfP1a9W2Tsl37+qpyCg/0BZ1024DImT68AAAAASUVORK5CYII\u003d",
+    "id": "brand_custom_template"
   },
   "description": "Send purchase events to Spotler",
   "containerContexts": [
@@ -261,62 +270,6 @@ ___TEMPLATE_PARAMETERS___
     ]
   }
 ]
-
-
-___SANDBOXED_JS_FOR_WEB_TEMPLATE___
-
-const sendHttpRequest = require('sendHttpRequest');
-const JSON = require('JSON');
-const logToConsole = require('logToConsole');
-const makeNumber = require('makeNumber');
-
-// Prepare the event data
-const eventData = {
-  event: 'Purchase',
-  email: data.email,
-  orderid: data.orderId,
-  products: data.products.map(product => ({
-    id: product.id,
-    name: product.name,
-    price: makeNumber(product.price),
-    quantity: makeNumber(product.quantity)
-  }))
-};
-
-// Add optional fields if they exist
-const optionalFields = [
-  'firstname', 'lastname', 'userId', 'mobileAdvertiserId', 'gender',
-  'birthdate', 'phone', 'postcode', 'city', 'country', 'currency',
-  'language', 'newsletter', 'totalvalue'
-];
-
-optionalFields.forEach(field => {
-  if (data[field]) {
-    eventData[field] = data[field];
-  }
-});
-
-// Prepare the request
-const requestUrl = 'https://api.squeezely.tech/v1/track';
-const requestBody = {
-  events: [eventData]
-};
-
-// Send the request
-sendHttpRequest(requestUrl, (statusCode, headers, body) => {
-  if (statusCode >= 200 && statusCode < 300) {
-    data.gtmOnSuccess();
-  } else {
-    data.gtmOnFailure();
-  }
-}, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'X-AUTH-ACCOUNT': data.accountId,
-    'X-AUTH-APIKEY': data.apiKey
-  }
-}, JSON.stringify(requestBody));
 
 
 ___SANDBOXED_JS_FOR_SERVER___
