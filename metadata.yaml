@@ -1,0 +1,5 @@
+homepage: "https://adpage.io"
+documentation: "https://github.com/AdPageGroup/spotler-server-tag"
+versions:
+  - sha: 322c6d1be7a6b406e030e925a0a1a10eb7433a75
+    changeNotes: Initial release.
